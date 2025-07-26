@@ -1,0 +1,184 @@
+{
+  "pixel_config": {
+    "name": "Liberte-se Ansiedade Pixel",
+    "version": "1.0",
+    "created_date": "2025-07-25",
+    "description": "Pixel de conversão para página de vendas do ebook Liberte-se da Ansiedade"
+  },
+  "events": [
+    {
+      "event_name": "PageView",
+      "event_id": "pv_001",
+      "description": "Visualização da página de vendas",
+      "trigger": "page_load",
+      "parameters": {
+        "page_title": "Liberte-se da Ansiedade - Transforme Sua Vida Agora!",
+        "page_url": "{{current_url}}",
+        "content_category": "ebook",
+        "content_name": "Liberte-se: O Guia Definitivo para Vencer a Ansiedade",
+        "currency": "BRL",
+        "value": 10.00
+      }
+    },
+    {
+      "event_name": "ViewContent",
+      "event_id": "vc_001", 
+      "description": "Visualização do conteúdo da oferta",
+      "trigger": "scroll_to_offer",
+      "parameters": {
+        "content_type": "product",
+        "content_ids": ["ebook_ansiedade_001"],
+        "content_name": "Liberte-se: O Guia Definitivo para Vencer a Ansiedade",
+        "content_category": "ebook",
+        "currency": "BRL",
+        "value": 10.00
+      }
+    },
+    {
+      "event_name": "AddToCart",
+      "event_id": "atc_001",
+      "description": "Clique no botão de compra",
+      "trigger": "click_buy_button",
+      "parameters": {
+        "content_type": "product",
+        "content_ids": ["ebook_ansiedade_001"],
+        "content_name": "Liberte-se: O Guia Definitivo para Vencer a Ansiedade",
+        "content_category": "ebook",
+        "currency": "BRL",
+        "value": 10.00,
+        "num_items": 1
+      }
+    },
+    {
+      "event_name": "InitiateCheckout",
+      "event_id": "ic_001",
+      "description": "Redirecionamento para checkout",
+      "trigger": "redirect_to_payment",
+      "parameters": {
+        "content_type": "product",
+        "content_ids": ["ebook_ansiedade_001"],
+        "content_name": "Liberte-se: O Guia Definitivo para Vencer a Ansiedade",
+        "content_category": "ebook",
+        "currency": "BRL",
+        "value": 10.00,
+        "num_items": 1
+      }
+    },
+    {
+      "event_name": "Purchase",
+      "event_id": "p_001",
+      "description": "Compra finalizada",
+      "trigger": "purchase_completed",
+      "parameters": {
+        "content_type": "product",
+        "content_ids": ["ebook_ansiedade_001"],
+        "content_name": "Liberte-se: O Guia Definitivo para Vencer a Ansiedade",
+        "content_category": "ebook",
+        "currency": "BRL",
+        "value": 10.00,
+        "num_items": 1,
+        "transaction_id": "{{transaction_id}}"
+      }
+    },
+    {
+      "event_name": "Lead",
+      "event_id": "l_001",
+      "description": "Geração de lead qualificado",
+      "trigger": "email_capture",
+      "parameters": {
+        "content_category": "ebook",
+        "content_name": "Liberte-se: O Guia Definitivo para Vencer a Ansiedade",
+        "currency": "BRL",
+        "value": 10.00
+      }
+    }
+  ],
+  "custom_audiences": [
+    {
+      "audience_name": "Visitantes da Página de Vendas",
+      "description": "Pessoas que visitaram a página de vendas do ebook",
+      "retention_days": 180,
+      "rules": [
+        {
+          "event": "PageView",
+          "url_contains": "liberte-se-ansiedade"
+        }
+      ]
+    },
+    {
+      "audience_name": "Interessados na Oferta",
+      "description": "Pessoas que visualizaram a seção de oferta",
+      "retention_days": 90,
+      "rules": [
+        {
+          "event": "ViewContent",
+          "content_category": "ebook"
+        }
+      ]
+    },
+    {
+      "audience_name": "Clicaram para Comprar",
+      "description": "Pessoas que clicaram no botão de compra mas não finalizaram",
+      "retention_days": 30,
+      "rules": [
+        {
+          "event": "AddToCart",
+          "content_ids": ["ebook_ansiedade_001"]
+        }
+      ]
+    },
+    {
+      "audience_name": "Compradores",
+      "description": "Pessoas que finalizaram a compra do ebook",
+      "retention_days": 365,
+      "rules": [
+        {
+          "event": "Purchase",
+          "content_ids": ["ebook_ansiedade_001"]
+        }
+      ]
+    }
+  ],
+  "conversion_tracking": {
+    "primary_conversion": "Purchase",
+    "secondary_conversions": ["AddToCart", "InitiateCheckout"],
+    "attribution_window": {
+      "view": 1,
+      "click": 7
+    },
+    "optimization_goal": "conversions"
+  },
+  "implementation": {
+    "platform": "Facebook Pixel",
+    "gtm_compatible": true,
+    "google_analytics_compatible": true,
+    "installation_notes": [
+      "Instalar o código base do pixel no <head> da página",
+      "Configurar eventos personalizados conforme os triggers especificados",
+      "Testar todos os eventos antes de ativar campanhas",
+      "Configurar audiências personalizadas no Gerenciador de Anúncios"
+    ]
+  },
+  "testing": {
+    "test_events": [
+      {
+        "event": "PageView",
+        "expected_parameters": ["page_title", "page_url", "value"]
+      },
+      {
+        "event": "AddToCart", 
+        "expected_parameters": ["content_ids", "value", "currency"]
+      },
+      {
+        "event": "Purchase",
+        "expected_parameters": ["content_ids", "value", "currency", "transaction_id"]
+      }
+    ],
+    "validation_tools": [
+      "Facebook Pixel Helper",
+      "Events Manager Test Events",
+      "Google Tag Assistant"
+    ]
+  }
+}
+
